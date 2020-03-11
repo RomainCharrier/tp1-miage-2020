@@ -16,7 +16,8 @@ WARNING: A faire impérativement *AVANT* le TP, nous n'aurons pas le temps penda
 * disposer d'au moins un compte Github par binôme ;
 * apporter au moins un portable Linux, MacOS ou Microsoft Windows par binôme ;
 * un JDK 8+  (conseillé : OpenJdk. Sous linux, installer le paquet `openjdk-13-jdk` par exemple) ;
-* Eclipse 2019+ installé avec le plugin 'DBeaver IDE' ;
+* Eclipse 2019+ (ou un autre IDE) installé
+* Un client PostgreSQSL (conseillé : plugin Eclipse `DBeaver IDE`) ;
 * un démon Docker récent 2018+ ;
 * disposer d'une image Docker Postgresql en local, faire `docker pull postgres` ;
 * un client REST (conseillés : https://insomnia.rest/[Insomnia] ou https://www.postman.com/[Postman]) ;
@@ -46,23 +47,32 @@ _Temps estimé : 1 h_
 
 * Observer le code du projet `todolist-debut-ex1`
 
-IMPORTANT: [Question]  Que constatez-vous  en terme de découpage du code ? Imaginez un projet d'entreprise constitué de centaines de classes ainsi structuré. Que risque-t-il d'arriver ?
+IMPORTANT: [Question]  Le code est-il structuré en couches ? Imaginez un projet d'entreprise constitué de centaines de classes ainsi structuré : que risque-t-il d'arriver ?
+
+On constate la présence d'un seul répertoire. Tous les fichiers sources sont situés dans ce même répertoire. Le code n'est donc découpé qu'en quatre classes. Autrement dit il sera presque impossible de s'y retrouver si il y avait plus d'une centaine de classes. Le temps de correction va aussi être exponentielle en fonction du nombre de fichier.
 
 IMPORTANT: [Question]  Que se passe-t-il si l'on renomme une colonne de la base de donnée ?
 
+
 IMPORTANT: [Question]  Où se trouve le code métier (voir la règle de gestion RG1) ? cette règle est-elle facilement testable par un test unitaire ? 
+Le code metier se trouve dans la class TodoListController. Cette regle n'est pas facilement testable par un test unitaire car il faut que l'item ait plus de 24 h pour avoir la mention late.
 
 * Lancer une base PostgreSQL en Docker :
 ```bash
 docker run --rm -it -e POSTGRES_PASSWORD=password -p 5432:5432 postgres
 ```
 IMPORTANT: [Question]  Expliquer cette ligne de commande (y compris les options utilisées)
+Cette ligne de commande permet de creer un conteneur postgres ayant pour mot de passe password il supprime le docker à la fin de l'execution et il lance le docker en mode interactif
 
 IMPORTANT: [Question]  Lancer les commandes `docker ps` et `ps -eaf | grep postgres`, à quoi correspondent les lignes affichées ? Que remarquez vous ?
+docker ps nous affiche tous les conteneurs en cours d'exécution.
+ps -eaf | grep postgres Permet de voir tous les processus contenant le mot postgres
 
 * Compléter le code manquant dans la méthode `TodoListController.createTodoItem()`
 
-* Pourquoi `todoItemRepository` est-il `null` ? Quelle est la meilleure façon de l'injecter ? Modifier le code en conséquence.
+* IMPORTANT: [Question] Pourquoi `todoItemRepository` est-il `null` ? Quelle est la meilleure façon de l'injecter ? 
+
+* Modifier le code en conséquence.
 
 * Tester vos endpoints avec un client REST.
 
@@ -98,11 +108,8 @@ Source : http://leanpub.com/get-your-hands-dirty-on-clean-architecture[Tom Hombe
   - la couche application qui contient tous les contrats : ports (interfaces) et les implémentations des ports d'entrée (ou "use case") et qui servent à orchestrer les entités.
   - la couche entités qui contient les entités (au sens DDD, pas au sens JPA). En général, classes complexes (méthodes riches, relations entre les entités,  pas de simples POJO anémiques)
 
-IMPORTANT: [Question] En observant le code, donnez les grands principes de cette architecture et les illustrer par des exemples de code.
-
-IMPORTANT: [Question] Avec quel pattern est implémenté ici le principe d'inversion de dépendance ? (par exemple le domaine n'a aucune dépendance directe vers l'adaptateur JPA de persistance mais pourtant, il cette dernière est appelé _in fine_). Précisez les lignes de code importantes.
-
-IMPORTANT: [Question] Qu'est ce que l'anti-pattern domaine anémique ? à quoi le reconnaît-on ? Est-il courant dans les modèles en couche classiques ? L'architecture hexagonale change-t-elle cette situation ?
+IMPORTANT: [Question] Rappeler en quelques lignes les grands principes de cette architecture.
+Les RG sont situés dans la couche domaine, c'est en effet la class TodoItem qui contient les RG (cf RG 1). Plus précisemment ces RG seront dans la couche entity de la couche domaine.
 
 Complétez ce code avec une fonctionnalité de création de `TodoItem`  persisté en base et appelé depuis un endpoint REST `POST /todos` qui renvoi un code `201` en cas de succès. La fonctionnalité à implémenter est contractualisée par le port d'entrée `AddTodoItem`.
 
@@ -113,4 +120,8 @@ _Temps estimé : 20 mins_
 
 * Implémentez (en junit) des TU sur la règle de gestion qui consiste à afficher `[LATE!]` dans la description d'un item en retard de plus de 24h.
 
-* Quels types de tests devra-t-on écrire pour les adapteurs ? Que teste-on dans ce cas ? S'il vous reste du temps, écrivez quelques uns de ces types de test.
+IMPORTANT: [Question] Quels types de tests devra-t-on écrire pour les adapteurs ? 
+
+IMPORTANT: [Question] Que teste-on dans ce cas ? 
+
+* S'il vous reste du temps, écrivez quelques uns de ces types de test.
