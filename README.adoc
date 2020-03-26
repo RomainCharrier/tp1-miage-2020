@@ -5,8 +5,7 @@ NOTE: TP de deux slots de 1h20
 ## Nom des étudiants de ce binôme 
 WARNING: NE PAS OUBLIER DE MENTIONNER LES DEUX NOMS !
 
-#XXX# et #YYY#
-
+Romain Charrier et Adil Ouzamou
 Commentaires éventuels des étudiants : #XXXXXX#
 
 ## Pré-requis 
@@ -52,6 +51,7 @@ IMPORTANT: [Question]  Le code est-il structuré en couches ? Imaginez un projet
 On constate la présence d'un seul répertoire. Tous les fichiers sources sont situés dans ce même répertoire. Le code n'est donc découpé qu'en quatre classes. Autrement dit il sera presque impossible de s'y retrouver si il y avait plus d'une centaine de classes. Le temps de correction va aussi être exponentielle en fonction du nombre de fichier.
 
 IMPORTANT: [Question]  Que se passe-t-il si l'on renomme une colonne de la base de donnée ?
+Il faur remodifier de monbreux fichier
 
 
 IMPORTANT: [Question]  Où se trouve le code métier (voir la règle de gestion RG1) ? cette règle est-elle facilement testable par un test unitaire ? 
